@@ -8,7 +8,7 @@ header('Access-Control-Allow-Headers:Access-Control-Allow-Headers, Content-Type,
 $data = json_decode(file_get_contents("php://input"), true);
 
 
-$uname = $data['uid'];
+$id = $data['uid'];
 $uname = $data['uname'];
 $uusername = $data['uusername'];
 $uemail = $data['uemail'];
@@ -16,7 +16,7 @@ $uaddress = $data['uaddress'];
 
 include 'db.php';
 
-$sql = "INSERT INTO user_tbl(name, username, email, address) VALUES ('{$uname}','{$uusername}','{$uemail}','{$uaddress}')";
+$sql = "UPDATE user_tbl SET name ='{$uname}', username = '{$uusername}' , email = '{$uemail}', address = '{$uaddress}' WHERE id = '{$id}';
 
 if (mysqli_query($conn, $sql)) {
     echo json_encode(array('message' => 'User Record Inserted.', 'status' => true));
