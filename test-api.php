@@ -11,22 +11,5 @@ $result = json_decode($result, true);
 echo '<pre>';
 print_r($result);
 
-// if (isset($result['status'])) {
-//     if ($result['status'] == true) {
-//         if (isset($result['result'])) {
-//             if ($result['result'] == true) {
-//                 echo '<pre>';
-//                 print_r($result['data']);
-//             } else {
-//                 // echo ($result['data']);
-//             }
-//         }
-
-//     }
-
-// } else {
-//     echo "API NOT Working";
-// }
-
 
 ?>
