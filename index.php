@@ -21,8 +21,27 @@ $result = json_decode($result, true);
 </head>
 
 <body>
-
     <div class="container mt-4">
+        <form id="addUserForm">
+            <div class="mb-3">
+                <label for="uname" class="form-label">Name</label>
+                <input type="text" class="form-control" id="uname" name="uname" required>
+            </div>
+            <div class="mb-3">
+                <label for="uusername" class="form-label">Username</label>
+                <input type="text" class="form-control" id="uusername" name="uusername" required>
+            </div>
+            <div class="mb-3">
+                <label for="uemail" class="form-label">Email</label>
+                <input type="email" class="form-control" id="uemail" name="uemail" required>
+            </div>
+            <div class="mb-3">
+                <label for="uaddress" class="form-label">Address</label>
+                <input type="text" class="form-control" id="uaddress" name="uaddress" required>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="addUser()">Add User</button>
+        </form>
+        <hr>
         <table id="userTable" class="table table-striped" style="width: 100%">
             <thead>
                 <tr>
@@ -56,12 +75,43 @@ $result = json_decode($result, true);
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            $('#userTable').DataTable();
-        });
-    </script>
+
 
 </body>
 
 </html>
+
+<script>
+    // Function to add a new user
+    function addUser() {
+        // Get form data
+        var formData = {
+            uname: $("#uname").val(),
+            uusername: $("#uusername").val(),
+            uemail: $("#uemail").val(),
+            uaddress: $("#uaddress").val(),
+        };
+
+        // Make a POST request to insert data
+        $.ajax({
+            type: "POST",
+            url: "api-insert.php", // Replace with the actual path to your PHP script
+            data: JSON.stringify(formData),
+            contentType: "application/json",
+            success: function (response) {
+                // Reload the table with updated data
+                $('#userTable').DataTable().ajax.reload();
+                // Clear the form fields
+                $('#addUserForm')[0].reset();
+            },
+            error: function (error) {
+                console.error("Error adding user:", error);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        // Initialize DataTable
+        $('#userTable').DataTable();
+    });
+</script>
