@@ -114,9 +114,21 @@ include 'data-api.php';
     $(document).ready(function () {
         // Initialize DataTable
         $('#userTable').DataTable();
+        // show_data();
     });
 
-
+    function show_data(id) {
+        $.ajax({
+            url: "user_list.php",
+            method: "post",
+            data: { id: id },
+            dataType: "text",
+            success: function (response) {
+                // console.log(response);
+                $("#tbody").html(response);
+            },
+        });
+    }
 
 
 
@@ -129,7 +141,7 @@ include 'data-api.php';
             contentType: "application/json",
             success: function (response) {
                 // Reload the table with updated data
-                $('#userTable').DataTable().ajax.reload();
+                // $('#userTable').DataTable().ajax.reload();
             },
             error: function (error) {
                 console.error("Error deleting user:", error);
