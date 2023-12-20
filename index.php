@@ -101,7 +101,7 @@ include 'data-api.php';
             contentType: "application/json",
             success: function (response) {
                 // Reload the table with updated data
-                $('#userTable').DataTable().ajax.reload();
+                // $('#userTable').DataTable().ajax.reload();
                 // Clear the form fields
                 $('#addUserForm')[0].reset();
             },
@@ -117,20 +117,35 @@ include 'data-api.php';
         // show_data();
     });
 
-    function show_data(id) {
+    function show_data() {
         $.ajax({
             url: "user_list.php",
             method: "post",
-            data: { id: id },
+            data: { type: 'Data_show' }, // Include the type parameter
             dataType: "text",
             success: function (response) {
-                // console.log(response);
                 $("#tbody").html(response);
             },
         });
     }
 
 
+    //edit functionality
+    $(document).on("click", ".btn-edit", function () {
+        let userId = $(this).data("id");
+        $.ajax({
+            url: "edit.php",
+            method: "post",
+            dataType: "json",
+            data: { id: userId },
+            success: function (response) {
+                $("#uname").val(response.uname);
+                $("#uusername").val(response.uusername);
+                $("#uemail").val(response.uemail);
+                $("#uaddress").val(response.uaddress);
+            },
+        });
+    });
 
 
     function deleteUser(userId) {
