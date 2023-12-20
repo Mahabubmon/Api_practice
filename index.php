@@ -1,11 +1,6 @@
 <?php
-$url = "http://localhost/Api_practice/api-fetch.php";
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$result = curl_exec($ch);
-curl_close($ch);
-$result = json_decode($result, true);
+include 'data-api.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +11,10 @@ $result = json_decode($result, true);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+
+    <link href=" https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
+        rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" />
 </head>
 
@@ -62,7 +60,7 @@ $result = json_decode($result, true);
                     <td>{$user['username']}</td>
                     <td>{$user['email']}</td>
                     <td>{$user['address']}</td>
-                    <td><button class='btn btn-warning btn-edit'  id='btnedit' data-id='" . $user['id'] . "'>Edit</button><button  id='btndel' class='btn btn-danger btn-delete' style='margin-left: 5px;'  data-id='" . $user['id'] . "' >Delete</button></td>
+                    <td><button class='btn btn-warning btn-edit'  id='btnedit' data-id='" . $user['id'] . "'>Edit</button><button  id='btndel' class='btn btn-danger btn-delete' style='margin-left: 5px;'  data-id='" . $user['id'] . "' onclick='deleteUser(" . $user['id'] . ")' >Delete</button></td>
                     </tr>";
                 }
                 ?>
@@ -70,10 +68,13 @@ $result = json_decode($result, true);
         </table>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
 
 
 
@@ -114,4 +115,25 @@ $result = json_decode($result, true);
         // Initialize DataTable
         $('#userTable').DataTable();
     });
+
+
+
+
+
+
+    function deleteUser(userId) {
+        $.ajax({
+            type: "DELETE",
+            url: "api-delete.php", // Replace with the actual path to your PHP delete script
+            data: JSON.stringify({ uid: userId }),
+            contentType: "application/json",
+            success: function (response) {
+                // Reload the table with updated data
+                $('#userTable').DataTable().ajax.reload();
+            },
+            error: function (error) {
+                console.error("Error deleting user:", error);
+            }
+        });
+    }
 </script>
