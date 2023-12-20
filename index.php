@@ -61,11 +61,7 @@
 
 <script>
 
-    $(document).ready(function () {
-        // Initialize DataTable
-        $('#userTable').DataTable();
-        // show_data();
-    });
+
 
 
 </script>
