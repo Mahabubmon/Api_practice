@@ -1,8 +1,3 @@
-<?php
-include 'data-api.php';
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,18 +47,6 @@ include 'data-api.php';
                 </tr>
             </thead>
             <tbody>
-                <?php
-                foreach ($result as $user) {
-                    echo "<tr>
-                    <td>{$user['id']}</td>
-                    <td>{$user['name']}</td>
-                    <td>{$user['username']}</td>
-                    <td>{$user['email']}</td>
-                    <td>{$user['address']}</td>
-                    <td><button class='btn btn-warning btn-edit'  id='btnedit' data-id='" . $user['id'] . "'>Edit</button><button  id='btndel' class='btn btn-danger btn-delete' style='margin-left: 5px;'  data-id='" . $user['id'] . "' onclick='deleteUser(" . $user['id'] . ")' >Delete</button></td>
-                    </tr>";
-                }
-                ?>
             </tbody>
         </table>
     </div>
@@ -72,44 +55,11 @@ include 'data-api.php';
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 
-
-
-
-
-
-
 </body>
 
 </html>
 
 <script>
-    // Function to add a new user
-    function addUser() {
-        // Get form data
-        var formData = {
-            uname: $("#uname").val(),
-            uusername: $("#uusername").val(),
-            uemail: $("#uemail").val(),
-            uaddress: $("#uaddress").val(),
-        };
-
-        // Make a POST request to insert data
-        $.ajax({
-            type: "POST",
-            url: "api-insert.php", // Replace with the actual path to your PHP script
-            data: JSON.stringify(formData),
-            contentType: "application/json",
-            success: function (response) {
-                // Reload the table with updated data
-                // $('#userTable').DataTable().ajax.reload();
-                // Clear the form fields
-                $('#addUserForm')[0].reset();
-            },
-            error: function (error) {
-                console.error("Error adding user:", error);
-            }
-        });
-    }
 
     $(document).ready(function () {
         // Initialize DataTable
@@ -117,50 +67,5 @@ include 'data-api.php';
         // show_data();
     });
 
-    function show_data() {
-        $.ajax({
-            url: "user_list.php",
-            method: "post",
-            data: { type: 'Data_show' }, // Include the type parameter
-            dataType: "text",
-            success: function (response) {
-                $("#tbody").html(response);
-            },
-        });
-    }
 
-
-    //edit functionality
-    $(document).on("click", ".btn-edit", function () {
-        let userId = $(this).data("id");
-        $.ajax({
-            url: "edit.php",
-            method: "post",
-            dataType: "json",
-            data: { id: userId },
-            success: function (response) {
-                $("#uname").val(response.uname);
-                $("#uusername").val(response.uusername);
-                $("#uemail").val(response.uemail);
-                $("#uaddress").val(response.uaddress);
-            },
-        });
-    });
-
-
-    function deleteUser(userId) {
-        $.ajax({
-            type: "DELETE",
-            url: "api-delete.php", // Replace with the actual path to your PHP delete script
-            data: JSON.stringify({ uid: userId }),
-            contentType: "application/json",
-            success: function (response) {
-                // Reload the table with updated data
-                // $('#userTable').DataTable().ajax.reload();
-            },
-            error: function (error) {
-                console.error("Error deleting user:", error);
-            }
-        });
-    }
 </script>
